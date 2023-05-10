@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StatSystem : MonoBehaviour
 {
+    public Animator ani;
     protected BasicStats Stats;
     protected virtual void StatSetting(int hp, int atk,float moveSpeed,float jumpForce)
     {
@@ -19,5 +20,9 @@ public class StatSystem : MonoBehaviour
         public int ATK;
         public float MoveSpeed;
         public float JumpForce;
+    }
+    void start()
+    {
+        ani = GetComponent<Animator>();
     }
 }

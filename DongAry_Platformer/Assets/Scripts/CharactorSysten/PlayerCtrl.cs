@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCtrl : GeneralAnimation
 {
     Rigidbody2D rb;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,6 +22,7 @@ public class PlayerCtrl : GeneralAnimation
         if(Input.GetAxis("Horizontal") != 0)
         {
             StateUpdate(CharacterStates.Run);
+            ani.SetBool("Walk", true);
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -30,7 +32,31 @@ public class PlayerCtrl : GeneralAnimation
         if (!Input.anyKey&&rb.velocity == Vector2.zero)
         {
             StateUpdate(CharacterStates.Idle);
+            ani.SetBool("Walk", false);
+        }
+        int key = 0;
+
+        if (Input.GetKey(KeyCode.LeftArrow)) key = -1;
+        if (Input.GetKey(KeyCode.RightArrow)) key = 1;
+
+        if (key != 0)
+        {
+            transform.localScale = new Vector3(key, 1, 1);
         }
     }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "ground")
+        {
+            ani.SetBool("Jump", true);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "ground")
+        {
+            ani.SetBool("Jump", false);
+        }
+    } 
 
 }
